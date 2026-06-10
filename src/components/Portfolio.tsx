@@ -15,7 +15,6 @@ interface PortfolioProps {
 }
 
 export default function Portfolio({ items, isAdminLoggedIn, onEditItem, onDeleteItem }: PortfolioProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeModalItem, setActiveModalItem] = useState<PortfolioItem | null>(null);
   const [viewMode, setViewMode] = useState<'after' | 'before'>('after'); // 모달 내 before/after 탭용
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0); // 다중 이미지 슬라이드 인덱스
@@ -28,16 +27,6 @@ export default function Portfolio({ items, isAdminLoggedIn, onEditItem, onDelete
     setViewMode('after');
     setCurrentSlideIndex(0);
   };
-
-  const categories = useMemo(() => {
-    const rawCategories = items.map(item => item.category);
-    return ['All', ...Array.from(new Set(rawCategories))];
-  }, [items]);
-
-  const filteredItems = useMemo(() => {
-    if (selectedCategory === 'All') return items;
-    return items.filter(item => item.category === selectedCategory);
-  }, [items, selectedCategory]);
 
   return (
     <section id="portfolio" className="py-24 bg-white relative">
@@ -52,7 +41,7 @@ export default function Portfolio({ items, isAdminLoggedIn, onEditItem, onDelete
               대표 포트폴리오
             </h2>
             <p className="text-gray-550 font-sans text-[15px] sm:text-[16px] mt-2">
-              카테고리별로 디자인과 마케팅의 성과 흐름을 직접 비교하여 확인해보세요.
+              디자인과 마케팅의 성과 흐름을 직접 비교하여 확인해보세요.
             </p>
           </div>
 
@@ -63,26 +52,9 @@ export default function Portfolio({ items, isAdminLoggedIn, onEditItem, onDelete
           )}
         </div>
 
-        {/* Categories Tab Bar */}
-        <div className="flex flex-wrap items-center gap-2 mb-10 pb-2 border-b border-gray-150 overflow-x-auto scrollbar-none">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${
-                selectedCategory === category
-                  ? 'bg-[#E5A300] text-neutral-950 shadow-sm'
-                  : 'bg-transparent border border-gray-200 text-gray-500 hover:text-black hover:border-black hover:bg-gray-50'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
         {/* Portfolio Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredItems.map((item, idx) => {
+          {items.map((item, idx) => {
             return (
               <div
                 key={item.id}
@@ -138,13 +110,17 @@ export default function Portfolio({ items, isAdminLoggedIn, onEditItem, onDelete
                 <div className="p-6 flex-1 flex flex-col justify-between content-between">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-[#E5A300] border border-amber-100 bg-amber-50 px-2 py-0.5 rounded-md">
-                        {item.category}
-                      </span>
-                      <span className="text-[10px] font-mono tracking-widest uppercase text-gray-550 font-bold">{item.clientName}</span>
+                      {item.category && (
+                        <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-[#E5A300] border border-amber-100 bg-amber-50 px-2 py-0.5 rounded-md">
+                          {item.category}
+                        </span>
+                      )}
+                      {item.clientName && (
+                        <span className="text-[10px] font-mono tracking-widest uppercase text-gray-550 font-bold">{item.clientName}</span>
+                      )}
                     </div>
                     <h3 className="font-sans font-bold text-lg text-black group-hover:text-[#E5A300] transition-colors tracking-tight line-clamp-2 mb-3">
-                      {item.title}
+                      {item.category ? `[${item.category}] ` : ''}{item.title}
                     </h3>
                   </div>
 
@@ -208,13 +184,17 @@ export default function Portfolio({ items, isAdminLoggedIn, onEditItem, onDelete
             <div className="p-6 md:p-8 border-b border-gray-150 flex items-center justify-between sticky top-0 bg-white z-10 shrink-0">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#E5A300] border border-amber-100 bg-amber-50 px-2.5 py-0.5 rounded-md">
-                    {activeModalItem.category}
-                  </span>
-                  <span className="text-xs text-gray-400 font-mono tracking-wider uppercase font-bold">{activeModalItem.clientName}</span>
+                  {activeModalItem.category && (
+                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#E5A300] border border-amber-100 bg-amber-50 px-2.5 py-0.5 rounded-md">
+                      {activeModalItem.category}
+                    </span>
+                  )}
+                  {activeModalItem.clientName && (
+                    <span className="text-xs text-gray-400 font-mono tracking-wider uppercase font-bold">{activeModalItem.clientName}</span>
+                  )}
                 </div>
                 <h3 className="font-sans font-extrabold text-xl md:text-2xl text-black mt-2 tracking-tight col-span-12">
-                  {activeModalItem.title}
+                  {activeModalItem.category ? `[${activeModalItem.category}] ` : ''}{activeModalItem.title}
                 </h3>
               </div>
               <button

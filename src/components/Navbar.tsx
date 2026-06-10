@@ -85,7 +85,7 @@ export default function Navbar({ onAdminClick, isAdminLoggedIn, onLogout }: Navb
             className="text-[12px] font-bold uppercase tracking-wider bg-black text-white px-6 py-3 rounded-md hover:bg-[#E5A300] transition-all shadow-sm"
             id="nav-contact-btn"
           >
-            포트폴리오 의뢰하기
+            디자인 의뢰하기
           </a>
         </div>
 
@@ -156,7 +156,7 @@ export default function Navbar({ onAdminClick, isAdminLoggedIn, onLogout }: Navb
                 className="w-full text-center text-xs font-bold uppercase tracking-wider bg-black text-white py-3.5 rounded-md hover:bg-[#E5A300] transition-all"
                 id="mobile-contact-btn"
               >
-                포트폴리오 의뢰하기
+                디자인 의뢰하기
               </a>
             </div>
           </div>

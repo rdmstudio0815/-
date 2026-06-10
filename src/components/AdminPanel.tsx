@@ -1324,20 +1324,15 @@ export default function AdminPanel({
                   {/* Category & Accent Color */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">수행 카테고리 *</label>
-                      <select
+                      <label className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">포트폴리오 카테고리 (제목 앞 기입 문구) *</label>
+                      <input
+                        type="text"
+                        required
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
+                        placeholder="예: 카드뉴스, 릴스, 인스타 마케팅"
                         className="w-full px-3 py-2 bg-white border border-gray-200 focus:border-[#0055FF] focus:outline-none text-black rounded-none"
-                      >
-                        <option value="Instagram Feed">Instagram Feed</option>
-                        <option value="Reels Thumbnail">Reels Thumbnail</option>
-                        <option value="Promotion Design">Promotion Design</option>
-                        <option value="Cafe Marketing">Cafe Marketing</option>
-                        <option value="Furniture Brand">Furniture Brand</option>
-                        <option value="Church Contents">Church Contents</option>
-                        <option value="Book Curation">Book Curation</option>
-                      </select>
+                      />
                     </div>
 
                     <div className="space-y-1">
