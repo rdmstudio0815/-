@@ -1,0 +1,6 @@
+{
+  "name": "둥근달스튜디오 - SNS 콘텐츠 디자인",
+  "description": "디자인과 마케팅을 함께 생각하는 SNS 콘텐츠 디자이너의 고품격 비즈니스 포트폴리오 웹사이트입니다. 성과 중심의 포트폴리오 및 프로젝트 소개, 디자인 가이드라인, 어드민 관리 기능을 포함하고 있습니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
