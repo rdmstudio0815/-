@@ -83,17 +83,21 @@ export default function App() {
     const savedPortfolio = localStorage.getItem('decora_portfolio');
     if (savedPortfolio) {
       try {
-        const parsed = JSON.parse(savedPortfolio) as PortfolioItem[];
-        // Backfill image URLs if they are missing or still set to old structure
-        const updated = parsed.map(item => {
-          const defaultItem = INITIAL_PORTFOLIO_ITEMS.find(d => d.id === item.id);
-          if (defaultItem && (!item.imageUrl || item.imageUrl.trim() === '')) {
-            return { ...item, imageUrl: defaultItem.imageUrl, isMockup: false };
-          }
-          return item;
-        });
-        setPortfolioItems(updated);
-        localStorage.setItem('decora_portfolio', JSON.stringify(updated));
+        const parsed = JSON.parse(savedPortfolio);
+        if (Array.isArray(parsed)) {
+          // Backfill image URLs if they are missing or still set to old structure
+          const updated = parsed.map(item => {
+            const defaultItem = INITIAL_PORTFOLIO_ITEMS.find(d => d.id === item.id);
+            if (defaultItem && (!item.imageUrl || item.imageUrl.trim() === '')) {
+              return { ...item, imageUrl: defaultItem.imageUrl, isMockup: false };
+            }
+            return item;
+          });
+          setPortfolioItems(updated);
+          localStorage.setItem('decora_portfolio', JSON.stringify(updated));
+        } else {
+          setPortfolioItems(INITIAL_PORTFOLIO_ITEMS);
+        }
       } catch (err) {
         setPortfolioItems(INITIAL_PORTFOLIO_ITEMS);
       }
@@ -106,7 +110,12 @@ export default function App() {
     const savedProjects = localStorage.getItem('decora_projects');
     if (savedProjects) {
       try {
-        setProjectExperiences(JSON.parse(savedProjects));
+        const parsed = JSON.parse(savedProjects);
+        if (Array.isArray(parsed)) {
+          setProjectExperiences(parsed);
+        } else {
+          setProjectExperiences(INITIAL_PROJECT_EXPERIENCES);
+        }
       } catch (err) {
         setProjectExperiences(INITIAL_PROJECT_EXPERIENCES);
       }
@@ -119,7 +128,12 @@ export default function App() {
     const savedReviews = localStorage.getItem('decora_reviews');
     if (savedReviews) {
       try {
-        setReviews(JSON.parse(savedReviews));
+        const parsed = JSON.parse(savedReviews);
+        if (Array.isArray(parsed)) {
+          setReviews(parsed);
+        } else {
+          setReviews(INITIAL_REVIEWS);
+        }
       } catch (err) {
         setReviews(INITIAL_REVIEWS);
       }
@@ -132,10 +146,14 @@ export default function App() {
     const savedFaqs = localStorage.getItem('decora_faqs');
     if (savedFaqs) {
       try {
-        const parsed = JSON.parse(savedFaqs) as FaqItem[];
-        const filtered = parsed.filter(item => item.id !== 'faq-4');
-        setFaqs(filtered);
-        localStorage.setItem('decora_faqs', JSON.stringify(filtered));
+        const parsed = JSON.parse(savedFaqs);
+        if (Array.isArray(parsed)) {
+          const filtered = parsed.filter(item => item && item.id !== 'faq-4');
+          setFaqs(filtered);
+          localStorage.setItem('decora_faqs', JSON.stringify(filtered));
+        } else {
+          setFaqs(INITIAL_FAQS);
+        }
       } catch (err) {
         setFaqs(INITIAL_FAQS);
       }
@@ -149,21 +167,25 @@ export default function App() {
     if (savedConfig) {
       try {
         const parsed = JSON.parse(savedConfig);
-        // Migrate old default main copy to the newly requested name
-        if (parsed.heroMainLine1 === '디자인과 마케팅을' || parsed.heroMainHighlight === 'SNS 콘텐츠 디자이너') {
-          parsed.heroMainLine1 = '디자인과 마케팅을 함께 생각하는';
-          parsed.heroMainLine2 = '디자인 스튜디오';
-          parsed.heroMainHighlight = '둥근달스튜디오입니다.';
+        if (parsed && typeof parsed === 'object') {
+          // Migrate old default main copy to the newly requested name
+          if (parsed.heroMainLine1 === '디자인과 마케팅을' || parsed.heroMainHighlight === 'SNS 콘텐츠 디자이너') {
+            parsed.heroMainLine1 = '디자인과 마케팅을 함께 생각하는';
+            parsed.heroMainLine2 = '디자인 스튜디오';
+            parsed.heroMainHighlight = '둥근달스튜디오입니다.';
+          }
+          if (!parsed.whyMeTitle || parsed.whyMeTitle === '단순히 "예쁘게 디자인하는 것"은 우리의 비즈니스 목표가 아닙니다.') {
+            parsed.whyMeTitle = '단순히 "예쁘게 디자인하는것"은 / 우리의 비즈니스 목표가 아닙니다';
+          }
+          if (!parsed.projectsTitle || parsed.projectsTitle === '단순 작업물이 아닌, 실제 계정 운영 경험을 증명합니다.' || (parsed.projectsTitle && parsed.projectsTitle.includes('단순한 일은'))) {
+            parsed.projectsTitle = '단순한 작업물이 아닌 / 실제 계정 운영 경험을 증명합니다.';
+          }
+          const merged = { ...DEFAULT_HOME_CONFIG, ...parsed };
+          localStorage.setItem('decora_home_config', JSON.stringify(merged));
+          setHomeConfig(merged);
+        } else {
+          setHomeConfig(DEFAULT_HOME_CONFIG);
         }
-        if (!parsed.whyMeTitle || parsed.whyMeTitle === '단순히 "예쁘게 디자인하는 것"은 우리의 비즈니스 목표가 아닙니다.') {
-          parsed.whyMeTitle = '단순히 "예쁘게 디자인하는것"은 / 우리의 비즈니스 목표가 아닙니다';
-        }
-        if (!parsed.projectsTitle || parsed.projectsTitle === '단순 작업물이 아닌, 실제 계정 운영 경험을 증명합니다.' || parsed.projectsTitle.includes('단순한 일은')) {
-          parsed.projectsTitle = '단순한 작업물이 아닌 / 실제 계정 운영 경험을 증명합니다.';
-        }
-        const merged = { ...DEFAULT_HOME_CONFIG, ...parsed };
-        localStorage.setItem('decora_home_config', JSON.stringify(merged));
-        setHomeConfig(merged);
       } catch (err) {
         setHomeConfig(DEFAULT_HOME_CONFIG);
       }
