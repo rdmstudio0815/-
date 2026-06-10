@@ -68,7 +68,7 @@ export default function Contact() {
               브랜드에 맞는 SNS 콘텐츠가 필요하다면, 편하게 문의해주세요.
             </h2>
             <p className="text-gray-550 font-sans text-sm sm:text-base mt-4 leading-relaxed">
-              대표님의 비즈니스 정량 분석과 맞춤 크리에이티브 시안에 관해 친절히 설명해 드립니다. SNS 운영 목적과 타겟 채널을 가볍게 남겨보세요.
+              고객님의 채널에 맞는 콘텐츠 제작을 위해 성심성의껏 상담해드립니다.
             </p>
           </div>
 
@@ -220,7 +220,7 @@ export default function Contact() {
 
               {/* Secure data prompt */}
               <div className="p-3 bg-white border border-gray-200 text-[10px] leading-relaxed text-gray-500 font-mono uppercase tracking-wide">
-                🔒 제출된 상담 내용은 암호화 상태로 로컬 저장되며, 본 채널 포트폴리오 총괄 디자이너 Decora의 어드민 패널 외에 타인에겐 절대 노출되지 않음을 보증합니다.
+                🔒 제출된 상담 내용은 암호화 상태로 로컬 저장되며, 본 채널 포트폴리오 총괄 디자이너 달님의 어드민 패널 외에 타인에겐 절대 노출되지 않음을 보증합니다.
               </div>
 
               {/* Submit button */}
